@@ -19,7 +19,12 @@ export default function LiveAxeModal({
   const minor = violations.filter((v) => v.impact === 'minor');
 
   return (
-    <div className="axe-modal-backdrop" onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div
+      className="axe-modal-backdrop"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') ((e) => e.target === e.currentTarget && onClose())(e); }}
+      role="button"
+      tabIndex={0}>
       <div className="axe-modal-card" role="dialog" aria-modal="true" aria-labelledby="axe-report-title">
         {/* Header */}
         <div className="axe-modal-header">
@@ -41,7 +46,7 @@ export default function LiveAxeModal({
               className="btn-primary"
               onClick={onRerun}
               disabled={isScanning}
-            >
+              onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onRerun(e)}>
               {isScanning ? 'Auditing DOM...' : '🔄 Re-Run Audit'}
             </button>
             <button
