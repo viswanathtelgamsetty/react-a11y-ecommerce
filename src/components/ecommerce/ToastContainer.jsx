@@ -32,14 +32,16 @@ export default function ToastContainer({ toasts, onDismiss, isAccessible, highli
               className="toast-dismiss-btn"
               onClick={() => onDismiss(toast.id)}
               aria-label="Dismiss notification"
-            >
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') (() => onDismiss(toast.id))(e); }}>
               ✕
             </button>
           ) : (
             <span
               className="toast-dismiss-fake"
               onClick={() => onDismiss(toast.id)}
-            >
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') (() => onDismiss(toast.id))(e); }}
+              role="button"
+              tabIndex={0}>
               ✕
             </span>
           )}
