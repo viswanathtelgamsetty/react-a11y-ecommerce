@@ -8,7 +8,7 @@ const PRODUCT_DATA = {
   originalPrice: 299.99,
   rating: 4.8,
   reviewCount: 128,
-  stockStatus: 'in-stock', // 'in-stock' or 'low-stock'
+  stockStatus: 'in-stock',
   stockCount: 4,
   images: [
     'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80',
@@ -60,7 +60,6 @@ export default function ProductDetail({ onAddToCart }) {
   const [activeTab, setActiveTab] = useState('overview');
   const [showToast, setShowToast] = useState(false);
   
-  // Review modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reviewerName, setReviewerName] = useState('');
   const [reviewerEmail, setReviewerEmail] = useState('');
@@ -77,7 +76,6 @@ export default function ProductDetail({ onAddToCart }) {
   const handleReviewSubmit = (e) => {
     e.preventDefault();
     if (!reviewerName.trim() || !reviewerEmail.trim() || !reviewText.trim()) {
-      // WCAG 3.3.1 & 1.4.1: Errors conveyed only via red border with no text message and no aria-invalid
       setFormErrors(true);
       return;
     }
@@ -94,7 +92,6 @@ export default function ProductDetail({ onAddToCart }) {
 
   return (
     <main className="product-detail-main">
-      {/* WCAG 4.1.3: Status alert without aria-live / role="status" */}
       {showToast && (
         <div className="cart-toast-banner">
           <span className="toast-icon">✓</span>
@@ -102,7 +99,6 @@ export default function ProductDetail({ onAddToCart }) {
         </div>
       )}
 
-      {/* WCAG 1.3.1: Breadcrumb constructed with unsemantic divs (no <nav aria-label="Breadcrumb">, no aria-current="page") */}
       <div className="product-breadcrumbs">
         <span className="breadcrumb-item">Home</span>
         <span className="breadcrumb-divider">/</span>
@@ -111,17 +107,13 @@ export default function ProductDetail({ onAddToCart }) {
         <span className="breadcrumb-current">Aura SoundMax Pro</span>
       </div>
 
-      {/* Main Grid: Gallery + Purchasing Column */}
       <div className="product-layout-grid">
-        {/* Left Column: Media Gallery */}
         <div className="product-gallery-col">
           <div className="main-image-container">
-            {/* WCAG 1.1.1: Image with generic alt="image" */}
             <img src={selectedImage} alt="image" className="main-image" />
           </div>
 
           <div className="thumbnails-row">
-            {/* WCAG 1.1.1: Missing alt attribute completely on thumbnails */}
             {PRODUCT_DATA.images.map((img, idx) => (
               <div
                 key={idx}
@@ -134,27 +126,22 @@ export default function ProductDetail({ onAddToCart }) {
           </div>
         </div>
 
-        {/* Right Column: Product Info & Purchase Options */}
         <div className="product-info-col">
-          {/* WCAG 1.3.1: Heading Level Skip: h1 jumps straight to h4 */}
           <h1 className="product-title">{PRODUCT_DATA.name}</h1>
           <h4 className="product-tagline">{PRODUCT_DATA.tagline}</h4>
 
-          {/* WCAG 1.1.1: Star rating rendered as raw text without aria-label */}
           <div className="rating-container">
             <span className="rating-stars">★★★★☆</span>
             <span className="rating-score">4.8</span>
             <span className="rating-count">({PRODUCT_DATA.reviewCount} customer reviews)</span>
           </div>
 
-          {/* Pricing */}
           <div className="pricing-box">
             <span className="price-current">${PRODUCT_DATA.price}</span>
             <span className="price-original">${PRODUCT_DATA.originalPrice}</span>
             <span className="price-badge">Save $50</span>
           </div>
 
-          {/* WCAG 1.4.1: Stock status indicated solely by a colored dot with no text alternative */}
           <div className="stock-status-row">
             <span className="stock-status-dot dot-green"></span>
             <span className="stock-status-text">In Stock & Ready to Ship</span>
@@ -162,8 +149,6 @@ export default function ProductDetail({ onAddToCart }) {
 
           <hr className="divider-line" />
 
-          {/* Color Selection - WCAG 1.4.1, 2.1.1, 4.1.2:
-              Custom div swatches with no text, no role="radio", no tabindex, not keyboard reachable */}
           <div className="color-section">
             <div className="section-label">Color: {selectedColor}</div>
             <div className="swatches-list">
@@ -178,8 +163,6 @@ export default function ProductDetail({ onAddToCart }) {
             </div>
           </div>
 
-          {/* Quantity Stepper - WCAG 2.1.1 & 4.1.2:
-              Non-semantic div buttons without role="button", not keyboard operable */}
           <div className="quantity-section">
             <div className="section-label">Quantity:</div>
             <div className="stepper-box">
@@ -199,7 +182,6 @@ export default function ProductDetail({ onAddToCart }) {
             </div>
           </div>
 
-          {/* Action Buttons */}
           <div className="action-buttons-group">
             <button
               type="button"
@@ -209,7 +191,6 @@ export default function ProductDetail({ onAddToCart }) {
               Add to Cart • ${(PRODUCT_DATA.price * quantity).toFixed(2)}
             </button>
 
-            {/* WCAG 2.4.4: Ambiguous link/button */}
             <button type="button" className="btn-buy-now">
               Buy Now
             </button>
@@ -224,7 +205,6 @@ export default function ProductDetail({ onAddToCart }) {
               ✍️ Write a Customer Review
             </button>
             <span className="action-dot">•</span>
-            {/* WCAG 2.4.4: Ambiguous "Learn More" link */}
             <a href="#warranty" className="btn-text-link">
               Learn More
             </a>
@@ -232,9 +212,6 @@ export default function ProductDetail({ onAddToCart }) {
         </div>
       </div>
 
-      {/* Tabs Interface - WCAG 4.1.2 & 2.1.1:
-          Anchor tags lacking role="tablist", role="tab", aria-selected, and arrow key navigation.
-          WCAG 2.4.3: Inactive tabs remain in DOM with links accessible via Tab (Ghost Links) */}
       <div className="product-tabs-wrapper">
         <div className="tabs-nav-bar">
           <a
@@ -270,7 +247,6 @@ export default function ProductDetail({ onAddToCart }) {
         </div>
 
         <div className="tab-panels-container">
-          {/* Overview Panel */}
           <div className={`tab-panel ${activeTab === 'overview' ? 'panel-visible' : 'panel-ghost'}`}>
             <h3 className="tab-heading">Architected for Acoustic Perfection</h3>
             <p className="tab-paragraph">
@@ -283,15 +259,12 @@ export default function ProductDetail({ onAddToCart }) {
               <li>✓ 55 hours continuous playback on single charge; fast charge gives 5 hours in 10 minutes</li>
             </ul>
             <div className="tab-links-row">
-              {/* WCAG 2.4.4: Ambiguous links without context */}
               <a href="#download" className="ambiguous-link">Click Here</a>
               <a href="#manual" className="ambiguous-link">Download</a>
               <a href="#compare" className="ambiguous-link">Details</a>
             </div>
           </div>
 
-          {/* Specifications Panel - WCAG 1.3.1:
-              Comparison table implemented as nested <div>s with no <table>, <th>, or scope semantics */}
           <div className={`tab-panel ${activeTab === 'specs' ? 'panel-visible' : 'panel-ghost'}`}>
             <h3 className="tab-heading">Hardware Benchmark & Specifications</h3>
             
@@ -312,7 +285,6 @@ export default function ProductDetail({ onAddToCart }) {
             </div>
           </div>
 
-          {/* Customer Reviews Panel */}
           <div className={`tab-panel ${activeTab === 'reviews' ? 'panel-visible' : 'panel-ghost'}`}>
             <div className="reviews-header-strip">
               <div>
@@ -335,7 +307,6 @@ export default function ProductDetail({ onAddToCart }) {
                     <span className="reviewer-name">{r.author}</span>
                     <span className="review-date">{r.date}</span>
                   </div>
-                  {/* WCAG 1.1.1: Missing aria-label on star ratings */}
                   <div className="review-stars">★★★★★</div>
                   <h4 className="review-title">{r.title}</h4>
                   <p className="review-body">{r.comment}</p>
@@ -346,12 +317,6 @@ export default function ProductDetail({ onAddToCart }) {
         </div>
       </div>
 
-      {/* Review Modal Dialog - WCAG 2.1.2 & 2.1.1 & 4.1.2 & 3.3.1 & 1.3.1:
-          - No focus trap: Tab key cycles out of modal to background elements
-          - Escape key does not close modal
-          - Missing role="dialog", aria-modal="true", and aria-labelledby
-          - Inputs have no <label> (placeholder only)
-          - Errors indicated strictly by red border, no error text or aria-invalid */}
       {isModalOpen && (
         <div className="modal-backdrop">
           <div className="modal-dialog-box">
@@ -372,7 +337,6 @@ export default function ProductDetail({ onAddToCart }) {
               </div>
             ) : (
               <form className="modal-form" onSubmit={handleReviewSubmit}>
-                {/* Name Input - No <label> */}
                 <div className="modal-field">
                   <input
                     type="text"
@@ -383,7 +347,6 @@ export default function ProductDetail({ onAddToCart }) {
                   />
                 </div>
 
-                {/* Email Input - No <label> */}
                 <div className="modal-field">
                   <input
                     type="email"
@@ -394,7 +357,6 @@ export default function ProductDetail({ onAddToCart }) {
                   />
                 </div>
 
-                {/* Review Textarea - No <label> */}
                 <div className="modal-field">
                   <textarea
                     rows={4}
